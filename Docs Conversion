@@ -1,1 +1,78 @@
 
+using System;
+using Aspose.Cells;
+using Aspose.Words;
+using SaveFormate = Aspose.Words.SaveFormat;
+using Row = Aspose.Words.Tables.Row;
+using Cell = Aspose.Words.Tables.Cell;
+using SaveFormat = Aspose.Cells.SaveFormat;
+using Aspose.Words.Tables;
+using PageSetup = Aspose.Words.PageSetup;
+using Aspose.Words.Settings;
+
+namespace DocumentConversion
+{
+    class program
+    {
+        static void Main(string[] args)
+        {
+             /*ConvertExcelToPdf("Input.xlsx", "output.pdf");*/
+
+             /*ConvertExcelToWord("Input.xlsx", "output.doc");*/
+
+            /*ConvertPdfToWord("HassanKhan.pdf", "New.doc");*/
+
+            var fileNames = new List<string> { "HassanKhan.pdf","output.doc", "Angular.pdf" };
+            var outputFilePath = "New.doc";
+            MergeWordDocuments(fileNames, outputFilePath);
+
+        }
+        static void ConvertExcelToPdf(string inputPath, string outputPath)
+        {
+            // Load the Excel file
+            Workbook workbook = new Workbook(inputPath);
+
+            workbook.Save(outputPath, SaveFormat.Pdf);
+        }
+
+        static void ConvertExcelToWord(string inputPath, string outputPath)
+        {
+            
+            // Load the Excel file
+            Workbook wb = new Workbook(inputPath);
+            
+
+            wb.Save("output.doc",SaveFormat.Docx);
+        }
+
+        static void ConvertPdfToWord(string inputPath, string outputPath)
+        {
+            Document doc = new Document(inputPath);
+
+            doc.Save("output.doc", SaveFormate.Docx);
+        }
+
+
+        static void MergeWordDocuments(List<string> fileNames, string outputFilePath)
+        {
+            Document doc = new Document();
+            // Remove all content from the destination document before appending.
+            doc.RemoveAllChildren();
+
+            foreach (string fileName in fileNames)
+            {
+                var input = new Document(fileName);
+                // Append the source document to the end of the destination document.
+                doc.AppendDocument(input, ImportFormatMode.KeepSourceFormatting);
+            }
+
+            doc.Save("New.doc");
+        }
+
+
+    }
+
+}
+
+
+
